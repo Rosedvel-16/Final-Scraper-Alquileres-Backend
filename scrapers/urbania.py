@@ -162,7 +162,7 @@ def scrape_urbania(zona: str = "", dormitorios: str = "0", banos: str = "0",
                         img = img.strip()
                     # EXTRAER DORMITORIOS
                     dormitorios_text = ""
-                    dorm_elem = c.select_one(".postingMainFeatures-module__posting-main-features-span:contains('dorm.')")
+                    dorm_elem = c.select_one(".postingMainFeatures-module__posting-main-features-span:-soup-contains('dorm.')")
                     if dorm_elem:
                         dorm_text = dorm_elem.get_text(" ", strip=True)
                         dorm_match = re.search(r'(\d+)', dorm_text)

@@ -21,4 +21,4 @@ COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 5. Ejecutar Gunicorn
-CMD gunicorn app:app --bind 0.0.0.0:$PORT --log-file -
+CMD gunicorn app:app --bind 0.0.0.0:$PORT --timeout 120 --log-file -
