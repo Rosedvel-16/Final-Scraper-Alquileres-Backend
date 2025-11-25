@@ -1,8 +1,9 @@
 [phases.setup]
-nixPkgs = ["python3", "chromium", "chromedriver"]
+# AQUÍ está la clave: Pedimos Python, Chrome, Driver y librerías de soporte
+nixPkgs = ["python3", "chromium", "chromedriver", "glib", "nss", "fontconfig", "freetype", "cairo", "pango", "gdk-pixbuf"]
 
 [phases.install]
 cmds = ["python -m pip install -r requirements.txt"]
 
 [start]
-cmd = "gunicorn app:app"
+cmd = "gunicorn app:app --log-file -"
