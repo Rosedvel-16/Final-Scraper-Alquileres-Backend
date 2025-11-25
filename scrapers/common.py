@@ -14,6 +14,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import os
+import shutil
 # User Agent Común
 COMMON_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
              "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36")
@@ -21,7 +22,7 @@ COMMON_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
 # -------------------- Helpers --------------------
 
 def create_driver(headless: bool = True):
-    """Crea una instancia del driver de Chrome compatible con Local y Railway."""
+    """Crea una instancia del driver compatible con cualquier entorno."""
     options = Options()
     
     options.add_argument("--headless=new")
@@ -34,13 +35,13 @@ def create_driver(headless: bool = True):
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
 
-    chromium_path = "/usr/bin/chromium"
-    chromedriver_path = "/usr/bin/chromedriver"
-    
-    if os.path.exists(chromium_path) and os.path.exists(chromedriver_path):
-        print("🚀 Iniciando en modo PRODUCCIÓN (Usando Chromium del sistema)")
-        options.binary_location = chromium_path
-        service = Service(executable_path=chromedriver_path)
+    system_chrome = shutil.which("chromium") or shutil.which("google-chrome")
+    system_driver = shutil.which("chromedriver")
+
+    if system_chrome and system_driver:
+        print(f"🚀 Iniciando en modo PRODUCCIÓN (Binario: {system_chrome})")
+        options.binary_location = system_chrome
+        service = Service(executable_path=system_driver)
         driver = webdriver.Chrome(service=service, options=options)
     else:
         print("💻 Iniciando en modo LOCAL (Usando webdriver_manager)")
